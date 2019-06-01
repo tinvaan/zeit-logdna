@@ -1,0 +1,18 @@
+{
+  "name": "zeit-logdna",
+  "version": "1.0.0",
+  "description": "Zeit integration for LogDNA",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "logs",
+    "logdna",
+    "zeit",
+    "serverless",
+    "api"
+  ],
+  "author": "Harish Navnit<harishnavnit@gmail.com>",
+  "license": "ISC"
+}
