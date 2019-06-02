@@ -20,7 +20,11 @@ const endpoints = {
     create: '/v9/now/deployments',
     delete: '/v9/now/deployments/$_identifier'
   },
-  events: '/v2/now/deployments/$_identifier/events'
+  events: '/v2/now/deployments/$_identifier/events',
+  projects: {
+    list: '/v1/projects/list',
+    get: '/v1/project/$_identifier'
+  }
 }
 
 const url = (endpoint, identifier = null) => {

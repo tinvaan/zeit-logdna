@@ -4,6 +4,7 @@ const program = require('commander')
 const { htm, withUiHook } = require('@zeit/integration-utils')
 
 const logs = require('./src/logs')
+const { Projects } = require('./src/now')
 
 let count = 0
 module.exports = withUiHook(({ payload }) => {
