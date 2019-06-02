@@ -1,8 +1,9 @@
 'use strict'
 
 const program = require('commander')
+const { withUiHook, htm } = require('@zeit/integration-utils')
 
-const logs = require('./logs')
+const logs = require('./src/logs')
 
 const format = async (deploy) => {
   const events = await logs.fetch(deploy)
@@ -19,6 +20,17 @@ const transport = async (deploy) => {
   return response
 }
 
+let count = 0
+module.exports = withUiHook(({ payload }) => {
+  count += 1
+  return htm`
+    <Page>
+      <P>Counter: ${count}</P>
+      <Button>Count Me</Button>
+    </Page>
+  `
+})
+
 program
   .version('1.0.0')
 
@@ -34,7 +46,7 @@ program
     } else if (action.format) {
       const formatted = await format(deploy); console.log(formatted)
     } else if (action.list || action.fetch) {
-      const events = await logs.fetch(deploy); console.log(events)
+      const events = await logs.fetch(deploy); console.log(events.data)
     }
   })
 

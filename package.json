@@ -2,7 +2,7 @@
   "name": "zeit-logdna",
   "version": "1.0.0",
   "description": "Zeit integration for LogDNA",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,7 +13,7 @@
     "commander": "^2.20.0",
     "logdna": "^3.0.2",
     "moment": "^2.24.0",
-    "zeit-api-client": "0.0.4"
+    "@zeit/integration-utils": "latest"
   },
   "keywords": [
     "logs",
