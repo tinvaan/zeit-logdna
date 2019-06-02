@@ -1,18 +1,56 @@
 'use strict'
 
+const moment = require('moment')
 const program = require('commander')
 const { htm, withUiHook } = require('@zeit/integration-utils')
 
 const logs = require('./src/logs')
 const { Projects } = require('./src/now')
+const { Table, TableRow, HeaderItem, BodyItem } = require('./src/views/components')
 
-let count = 0
-module.exports = withUiHook(({ payload }) => {
-  count += 1
+const table = {}
+table.headerString = () => {
+  return htm`
+    ${HeaderItem('Url')}
+    ${HeaderItem('Created on')}
+    ${HeaderItem('State')}
+    ${HeaderItem('Logged')}
+  `
+}
+
+table.bodyString = (deployments) => {
+  return htm`
+  ${deployments.map(instance => TableRow(table.rowString(instance)))}
+  `
+}
+
+table.rowString = (instance) => {
+  return htm`
+    ${BodyItem(instance.url)}
+    ${BodyItem(moment.unix(instance.created))}
+    ${BodyItem(instance.state)}
+    ${BodyItem('YES')}
+    ${BodyItem(htm`<Button small action="viewLogDNA">View</Button>`)}
+  `
+}
+
+module.exports = withUiHook(async ({ payload, zeitClient }) => {
+  if (payload.project === null || payload.projectId === null) {
+    return htm`
+      <Page>
+        <H2>Select project from the dropdown below</H2>
+        <ProjectSwitcher />
+      </Page>
+    `
+  }
+
+  const all = await zeitClient.fetchAndThrow(`/v4/now/deployments?projectId=${payload.projectId}`, { method: 'GET' })
   return htm`
     <Page>
-      <P>Counter: ${count}</P>
-      <Button>Count Me</Button>
+      <ProjectSwitcher />
+      <BR /><BR /><BR />
+      <H1>Deployments for "${payload.project.name}"</H1>
+      ${Table(table.headerString(), table.bodyString(all.deployments))}
     </Page>
   `
 })
