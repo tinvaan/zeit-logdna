@@ -16,10 +16,14 @@ const fetch = async (deploymentId) => {
 const format = async (logs) => {
   const lines = logs.map(log => {
     return {
+      timestamp: log.payload.date,
       line: log.payload.text,
-      type: log.payload.info.type,
-      file: log.payload.info.path,
-      timestamp: log.payload.date
+      app: 'TODO',
+      level: log.type === 'stdout' ? 'INFO' : log.type,
+      meta: {
+        type: log.payload.info.type,
+        file: log.payload.info.path
+      }
     }
   })
 
